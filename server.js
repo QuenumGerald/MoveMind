@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
 const PORT = process.env.PORT || 3000;
+const path = require('path');
+
+// Serve static frontend
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- LlamaIndex (vector DB integration) ---
 require('dotenv').config();
@@ -129,7 +134,7 @@ const sendDatadogMetric = async (metric, value = 1) => {
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello, MoveMind!');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Onboarding simulation: lecture du CSV
@@ -240,9 +245,24 @@ app.get('/onboarding', (req, res) => {
 });
 
 // Endpoint stub: /data-ingest
-app.post('/data-ingest', (req, res) => {
-  // Simule l'indexation des données utilisateur
-  res.json({ indexedData: { userId: 1, summary: 'User data indexed!' } });
+app.post('/data-ingest', async (req, res) => {
+  // Simule l'indexation des données utilisateur pour le workflow
+  await sendDatadogMetric('data.ingested');
+  
+  const userData = req.body;
+  console.log('📥 Data ingest received:', userData);
+  
+  res.json({ 
+    indexedData: { 
+      userId: userData.userId || 1, 
+      goals: userData.goals || 'Improve fitness',
+      currentWeight: userData.currentWeight || '75kg',
+      targetWeight: userData.targetWeight || '70kg',
+      summary: 'User data successfully indexed and analyzed!',
+      timestamp: new Date().toISOString(),
+      status: 'indexed'
+    } 
+  });
 });
 
 // Endpoint stub: /generate-plan
