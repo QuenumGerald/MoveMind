@@ -152,3 +152,44 @@ Ce projet utilise un workflow Orkes pour simuler un pipeline de coaching fitness
 ---
 
 Quand tes microservices seront prêts, il suffira de remplacer les URLs dans ce workflow.
+
+
+## 📊 Monitoring & Datadog MCP
+
+MoveMind envoie des métriques personnalisées à Datadog pour le monitoring et le dashboarding en temps réel.
+
+### Métriques envoyées
+- `plan.generated` : incrémentée à chaque appel de `/generate-plan`
+- `feedback.received` : incrémentée à chaque appel de `/collect-feedback`
+- Tag commun : `app:movemind`
+
+### Configuration Datadog
+1. **Créer une API Key Datadog** :
+   - Va dans [Datadog > Organization Settings > API Keys](https://app.datadoghq.com/organization-settings/api-keys)
+   - Clique sur "New Key", donne-lui un nom, copie la valeur.
+2. **Ajoute la clé dans `.env`** :
+   ```
+   DD_API_KEY=ta_cle_api_datadog
+   ```
+3. **Redémarre le serveur** :
+   ```bash
+   npm start
+   ```
+
+### Visualiser les métriques
+- Va dans [Datadog Metrics Explorer](https://app.datadoghq.com/metrics/explorer)
+- Recherche `plan.generated` ou `feedback.received`
+- Filtre par le tag `app:movemind` pour isoler les métriques MoveMind
+- Ajoute des widgets à un dashboard pour suivre l'activité en temps réel
+
+
+## 🚦 Endpoints & Effet Monitoring
+
+| Endpoint                | Effet Datadog                | Description                                 |
+|------------------------|------------------------------|---------------------------------------------|
+| `/generate-plan`       | +1 sur `plan.generated`      | Génère un plan sportif (stub/demo)          |
+| `/collect-feedback`    | +1 sur `feedback.received`   | Simule la collecte de feedback utilisateur  |
+
+Chaque appel à ces endpoints envoie automatiquement la métrique correspondante à Datadog MCP.
+
+---
