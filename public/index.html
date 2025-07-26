@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MoveMind Frontend</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    section { margin-bottom: 20px; }
+    pre { background-color: #f4f4f4; padding: 10px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>MoveMind Frontend</h1>
+
+  <section>
+    <h2>Onboarding Data</h2>
+    <button onclick="fetchOnboarding()">GET /onboarding</button>
+    <pre id="onboardingOutput"></pre>
+  </section>
+
+  <section>
+    <h2>Index Onboarding</h2>
+    <button onclick="indexOnboarding()">POST /index-onboarding</button>
+    <pre id="indexOutput"></pre>
+  </section>
+
+  <section>
+    <h2>Query Onboarding</h2>
+    <input type="text" id="queryInput" placeholder="Ask something..." size="50">
+    <button onclick="queryOnboarding()">POST /query-onboarding</button>
+    <pre id="queryOutput"></pre>
+  </section>
+
+  <section>
+    <h2>Start Workflow</h2>
+    <textarea id="workflowInput" rows="5" cols="50">{ "name": "movemind", "input": { "userData": { "userId": 1 } } }</textarea><br>
+    <button onclick="startWorkflow()">POST /start-workflow</button>
+    <pre id="workflowOutput"></pre>
+  </section>
+
+  <section>
+    <h2>Workflow Status</h2>
+    <input type="text" id="statusId" placeholder="Workflow ID">
+    <button onclick="getWorkflowStatus()">GET /workflow-status/:id</button>
+    <pre id="statusOutput"></pre>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

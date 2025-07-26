@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
+const path = require('path');
+
+// Serve static frontend
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- LlamaIndex (vector DB integration) ---
 require('dotenv').config();
@@ -129,7 +133,7 @@ const sendDatadogMetric = async (metric, value = 1) => {
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello, MoveMind!');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Onboarding simulation: lecture du CSV
